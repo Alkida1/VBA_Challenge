@@ -13,5 +13,5 @@ At the end calculate the a)Greatest Percent Increase, b)The Greatest Percent dec
 Results should match the picture examples
 .![2018_3](https://user-images.githubusercontent.com/118771610/211426945-87230204-de2e-4f3c-9915-cdfef32dbdf0.png)
 
-Make sure the VBA script runs through every worksheet(year)
+Make sure the VBA script runs through every worksheet
 
