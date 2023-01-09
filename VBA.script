@@ -103,7 +103,6 @@ Next i
         If ws.Cells(i, "K").Value < ws.Cells(3, "Q").Value Then
             ws.Cells(3, "Q").Value = ws.Cells(i, "K").Value
             ws.Cells(3, "Q").NumberFormat = "0.00%"
-            ws.Cells(3, "Q").Style = "Percent"
             ws.Cells(3, "P").Value = ws.Cells(i, "I").Value
          End If
          
