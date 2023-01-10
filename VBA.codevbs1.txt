@@ -1,0 +1,125 @@
+Sub stockmarket()
+
+'Create a script that loops through all the stocks for one year and outputs the following information:
+'The ticker symbol
+'Yearly change from opening price at the beginning of a given year to the closing price at the end of that year.
+'The percent change from opening price at the beginning of a given year to the closing price at the end of that year.
+'The total stock volume of the stock.
+
+'Loop through all Worksheets
+For Each ws In Worksheets
+
+    'Declare variables
+    Dim Worksheetname As String
+    Dim Ticker As String
+    Dim Summary_Table_Row As Long
+    Dim Lastrow As Long
+    Dim openprice As Double
+    Dim closeprice As Double
+    Dim Totalstockvol As Double
+    Dim Yearlychange As Double
+    Dim Percentchange As Double
+    'Dim GreatestToatlVolume As Double
+    
+    Summary_Table_Row = 2
+    Totalstockvol = 0
+    GreatestTotalVolume = 0
+    GreatestIncrease = 0
+    GreatestDecrease = 0
+    
+    
+    'Column Labels
+    ws.Cells(1, "I").Value = "Ticker"
+    ws.Cells(1, "J").Value = "Yearlychange"
+    ws.Cells(1, "K").Value = "Percentchange"
+    ws.Cells(1, "L").Value = "Totalstockvol"
+    ws.Cells(1, "P").Value = "Ticker"
+    ws.Cells(1, "Q").Value = "Value"
+    ws.Cells(2, "O").Value = "Greatest % Increase"
+    ws.Cells(3, "O").Value = "Greatest % Decrease"
+    ws.Cells(4, "O").Value = "GreatestTotalVolume"
+    
+    'Declare Last Row
+    Lastrow = ws.Cells(Rows.Count, "A").End(xlUp).Row
+    
+    
+    
+ For i = 2 To Lastrow
+ 
+    Ticker = ws.Cells(i, "A").Value
+    NextTicker = ws.Cells(i + 1, "A").Value
+    PreviousTicker = ws.Cells(i - 1, "A").Value
+    
+    'Lastrow
+    If NextTicker <> Ticker Then
+        Ticker = ws.Cells(i, "A").Value
+        closeprice = ws.Cells(i, "F").Value
+        Totalstockvol = ws.Cells(i, "G").Value + Totalstockvol
+        Yearlychange = closeprice - openprice
+        
+        'Conditional Formatting
+        If Yearlychange > 0 Then
+            ws.Cells(Summary_Table_Row, "J").Interior.ColorIndex = 4
+            
+        Else
+            ws.Cells(Summary_Table_Row, "J").Interior.ColorIndex = 3
+    
+        End If
+        
+        
+        ws.Cells(Summary_Table_Row, "I").Value = Ticker
+        ws.Cells(Summary_Table_Row, "J").Value = Yearlychange
+        ws.Cells(Summary_Table_Row, "K").Value = "%" & (Yearlychange / openprice * 100)
+        ws.Cells(Summary_Table_Row, "L").Value = Totalstockvol
+        
+        Summary_Table_Row = Summary_Table_Row + 1
+        Totalstcockvol = 0
+        
+     'Firstrow
+    ElseIf Ticker <> PreviousTicker Then
+         openprice = ws.Cells(i, "C").Value
+
+    'Rest of the rows
+    Else
+      Totalstockvol = ws.Cells(i, "G").Value + Totalstockvol
+ End If
+
+Next i
+
+
+    'Declare LastRow
+    Lastrow = ws.Cells(Rows.Count, "K").End(xlUp).Row
+    
+    'Loop for Greatest%increase,Greatest% decrease,Greatest Total volume
+    
+    For i = 2 To Lastrow
+    
+       If ws.Cells(i, "K").Value > ws.Cells(2, "Q").Value Then
+            ws.Cells(2, "Q").Value = ws.Cells(i, "K").Value
+            ws.Cells(2, "Q").NumberFormat = "0.00%"
+            ws.Cells(2, "P").Value = ws.Cells(i, "I").Value
+        End If
+        
+        If ws.Cells(i, "K").Value < ws.Cells(3, "Q").Value Then
+            ws.Cells(3, "Q").Value = ws.Cells(i, "K").Value
+            ws.Cells(3, "Q").NumberFormat = "0.00%"
+            ws.Cells(3, "Q").Style = "Percent"
+            ws.Cells(3, "P").Value = ws.Cells(i, "I").Value
+         End If
+         
+
+         
+         If ws.Cells(i, "L").Value > ws.Cells(4, "Q").Value Then
+            ws.Cells(4, "Q").Value = ws.Cells(i, "L").Value
+            ws.Cells(4, "P").Value = ws.Cells(i, "I").Value
+          End If
+        
+    
+    
+Next i
+ 
+Next ws
+
+MsgBox ("Done")
+
+End Sub
